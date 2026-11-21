@@ -27,14 +27,14 @@ function rep(id,A,fields,blank){const el=$('#'+id),f1=(f,it)=>f.o?`<select data-
 const BANNER=(t='Page heading')=>`<div class="panel"><h3>${t}</h3><div class="pb"><div class="g2"><label>Heading, first word<input data-b="hero.a"></label><label>Heading, highlighted word<input data-b="hero.b"></label></div><label>Tagline<input data-b="hero.p"></label><div class="g2"><label>Button text<input data-b="hero.btn"></label><label>Button link<input data-b="hero.href"></label></div></div></div>`;
 function toast(m){let t=$('.tg');if(!t){t=document.createElement('div');t.className='tg';t.setAttribute('role','status');document.body.append(t)}
   t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2400)}
-const NAV=[['index.html','Dashboard','fa-gauge'],['home-content.html','Home page','fa-house'],['about.html','About','fa-circle-info'],['courses.html','Courses','fa-graduation-cap'],['services.html','Services','fa-screwdriver-wrench'],['placements.html','Placements','fa-user-tie'],['gallery.html','Gallery','fa-images'],['certifications.html','Certifications','fa-award'],['contact.html','Contact & footer','fa-phone']];
+const NAV=[['index.php','Dashboard','fa-gauge'],['home-content.php','Home page','fa-house'],['about.php','About','fa-circle-info'],['courses.php','Courses','fa-graduation-cap'],['services.php','Services','fa-screwdriver-wrench'],['placements.php','Placements','fa-user-tie'],['gallery.php','Gallery','fa-images'],['certifications.php','Certifications','fa-award'],['contact.php','Contact & footer','fa-phone']];
 function openDr(id){$('#'+id).classList.add('open');$('#bd').classList.add('on')}
 function closeDr(){$$('.dr.open').forEach(d=>d.classList.remove('open'));$('#side').classList.remove('open');$('#bd').classList.remove('on')}
 document.addEventListener('DOMContentLoaded',()=>{
   const pg=document.body.dataset.page;
-  $('#side').innerHTML=`<a class="logo" href="index.html"><img src="../assets/logo.png" alt="I-Net Infotech admin"></a><div class="gt">Website content</div>`+
+  $('#side').innerHTML=`<a class="logo" href="index.php"><img src="../assets/logo.png" alt="I-Net Infotech admin"></a><div class="gt">Website content</div>`+
     NAV.map(n=>`<a class="nv${n[0]===pg?' on':''}" href="${n[0]}"><i class="fa-solid ${n[2]}"></i>${n[1]}</a>`).join('');
-  $('#top').innerHTML=`<button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="side"><i class="fa-solid fa-bars"></i></button><h1>${esc(document.body.dataset.title)}</h1><a class="site" href="../index.html" target="_blank" rel="noopener" aria-label="View site"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>View site</span></a><span class="av" title="Signed in as Admin">AD</span>`;
+  $('#top').innerHTML=`<button class="menu" aria-label="Open menu" aria-expanded="false" aria-controls="side"><i class="fa-solid fa-bars"></i></button><h1>${esc(document.body.dataset.title)}</h1><a class="site" href="../index.php" target="_blank" rel="noopener" aria-label="View site"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>View site</span></a><span class="av" title="Signed in as Admin">AD</span>`;
   $('.menu').onclick=()=>{const o=$('#side').classList.toggle('open');$('#bd').classList.toggle('on',o);$('.menu').setAttribute('aria-expanded',o)};
   const bd=document.createElement('div');bd.className='bd';bd.id='bd';bd.onclick=closeDr;document.body.append(bd);
   addEventListener('keydown',e=>{if(e.key==='Escape')closeDr()});

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Services | I-Net Admin</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="icon" href="../assets/logo2.png"><link rel="stylesheet" href="css/admin.css"></head><body data-page="services.html" data-title="Services"><aside id="side"></aside><div class="main"><header id="top"></header><main class="content">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Services | I-Net Admin</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="icon" href="../assets/logo2.png"><link rel="stylesheet" href="css/admin.css"></head><body data-page="services.php" data-title="Services"><aside id="side"></aside><div class="main"><header id="top"></header><main class="content">
 <!-- API: GET /api/services | PUT /api/services. JSON: hero, how{title,p,steps[]}, list[] with id, icon, name, short, title, desc, pts[], fit, course, href. List order = tab order on the site. -->
 <div class="ph"><div><i class="dash"></i><h2>Services</h2><p>The services shown on the Services page, plus the “How we work” steps. Use the arrows to change the order.</p></div><button class="btn" id="add"><i class="fa-solid fa-plus"></i>Add service</button></div>
 <div class="panel tw"><table class="rt"><thead><tr><th>Icon</th><th>Service</th><th>Summary</th><th></th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
@@ -11,7 +11,7 @@
 <label>Panel heading<input id="f-title"></label><label>Intro<textarea id="f-desc" rows="3"></textarea></label>
 <label>What is included <small>(one point per line)</small><textarea id="f-pts" rows="6"></textarea></label>
 <label>“Best for” line <small>(start with “Best for”)</small><input id="f-fit"></label>
-<div class="g2"><label>Link text<input id="f-course" placeholder="e.g. Cisco and Red Hat training"></label><label>Link address <small>(empty opens Courses)</small><input id="f-href" placeholder="courses.html"></label></div></form>
+<div class="g2"><label>Link text<input id="f-course" placeholder="e.g. Cisco and Red Hat training"></label><label>Link address <small>(empty opens Courses)</small><input id="f-href" placeholder="courses.php"></label></div></form>
 <div class="pv"><p>Preview of the panel</p><div class="gc" id="pv" style="padding:18px"></div></div></div>
 <footer><button class="btn danger" id="del" type="button">Delete</button><span><button class="btn ghost" data-close type="button">Cancel</button> <button class="btn" id="save" type="button">Save service</button></span></footer></aside>
 </main></div><script src="js/seed.js"></script><script src="js/content.js"></script><script src="js/admin.js"></script>

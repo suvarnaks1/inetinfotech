@@ -106,7 +106,7 @@ const courseNames=()=>{
  try{if(typeof COURSES_DEFAULT!=='undefined')return COURSES_DEFAULT.filter(c=>c.status!=='draft').map(c=>c.title)}catch(_){}
  return FALLBACK};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const onContact=/contact\.html$/.test(location.pathname);
+const onContact=/contact\.php$/.test(location.pathname);
 
 const pu=document.createElement('div');pu.className='pu';pu.id='puRoot';pu.setAttribute('aria-hidden','true');
 pu.innerHTML=`
@@ -200,7 +200,7 @@ addEventListener('keydown',e=>{
   if(e.shiftKey&&(document.activeElement===a||document.activeElement===card)){e.preventDefault();z.focus()}
   else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}});
 fab.addEventListener('click',()=>open());
-/* any element can open it:  <a href="contact.html" data-popup="register">  */
+/* any element can open it:  <a href="contact.php" data-popup="register">  */
 document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-popup]');
  if(t){e.preventDefault();e.stopImmediatePropagation();open(t.dataset.popup==='enquire'?'enquire':'register')}},true);
 
@@ -219,7 +219,7 @@ form.addEventListener('submit',e=>{
  if(err){const first=$('.bad input',form);first&&first.focus();return}
  const btn=$('.btn[type=submit]',form);btn.classList.add('load');
  const lead={id:Date.now().toString(36),type:mode,name:d.name.trim(),phone:d.phone.trim(),email:mode==='register'?d.email.trim():'',
-  course:d.course||'',mode:mode==='register'?d.mode:'',message:mode==='enquire'?d.message.trim():'',page:location.pathname.split('/').pop()||'index.html',ts:new Date().toISOString()};
+  course:d.course||'',mode:mode==='register'?d.mode:'',message:mode==='enquire'?d.message.trim():'',page:location.pathname.split('/').pop()||'index.php',ts:new Date().toISOString()};
  /* DEMO storage: same approach as the admin panel (localStorage 'inet.*').
     BACKEND: replace with  fetch('/api/leads',{method:'POST',body:JSON.stringify(lead)})  */
  try{const a=JSON.parse(localStorage.getItem('inet.leads')||'[]');a.unshift(lead);localStorage.setItem('inet.leads',JSON.stringify(a.slice(0,500)));

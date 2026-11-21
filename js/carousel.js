@@ -93,8 +93,8 @@
   }
 
   function cardHTML(item, round, compact) {
-    if (item && typeof item === 'object' && item.html != null) {
-      return '<div class="carousel-card is-custom' + (round ? ' is-round' : '') + '">' + item.html + '<span class="carousel-card-rim"></span></div>';
+    if (item && typeof item === 'object' && item.php != null) {
+      return '<div class="carousel-card is-custom' + (round ? ' is-round' : '') + '">' + item.php + '<span class="carousel-card-rim"></span></div>';
     }
     var d = typeof item === 'string' ? { image: item } : (item || {});
     var text = !!(d.title || d.description);

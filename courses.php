@@ -1,3 +1,14 @@
+<?php
+// 1. Database Connection (ഡാറ്റാബേസ് കണക്ഷൻ)
+$conn = new mysqli("localhost", "root", "", "inetinfotech");
+if ($conn->connect_error) {
+    die("Database connection failed: " . $conn->connect_error);
+}
+
+// 2. Fetch published courses from the database
+$sql = "SELECT * FROM courses WHERE status = 'published' ORDER BY id DESC";
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,17 +27,17 @@
 
 <header>
   <div class="w nav">
-    <a href="index.html" aria-label="I-Net Infotech home"><img src="assets/logo.png" alt="I-Net Infotech"></a>
+    <a href="index.php" aria-label="I-Net Infotech home"><img src="assets/logo.png" alt="I-Net Infotech"></a>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="courses.html" class="on">Courses</a></li>
-      <li><a href="products.html">Services</a></li>
-      <li><a href="placements.html">Placements</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="index.php">Home</a></li>
+      <li><a href="about.php">About</a></li>
+      <li><a href="courses.php" class="on">Courses</a></li>
+      <li><a href="services.php">Services</a></li>
+      <li><a href="placements.php">Placements</a></li>
+      <li><a href="gallery.php">Gallery</a></li>
+      <li><a href="contact.php">Contact</a></li>
     </ul>
-    <a class="btn" href="contact.html">Enrol now</a>
+    <a class="btn" href="contact.php">Enrol now</a>
     <button class="tg" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
   </div>
 </header>
@@ -37,7 +48,7 @@
       <div>
         <h1>Our<em>courses</em></h1>
         <p>Pick a track. Build real work.</p>
-        <a class="btn" href="contact.html">Talk to a counsellor</a>
+        <a class="btn" href="contact.php">Talk to a counsellor</a>
       </div>
       <div class="pimgs" aria-hidden="true">
         <img src="assets/it-programming.jpg" alt="" loading="lazy">
@@ -49,6 +60,7 @@
   <div class="sub">
     <div class="w">
       <strong>Course topics</strong>
+      <!-- PHP-യിൽ നിന്ന് ലോഡ് ചെയ്യുന്നതിനാൽ, ഇവിടെ ഫിൽട്ടർ ചെയ്യാൻ ഞാൻ ഒരു ചെറിയ JS ഉപയോഗിക്കുന്നു -->
       <button class="on" data-f="all">All</button>
       <button data-f="net">Networking</button>
       <button data-f="ops">Cloud &amp; Security</button>
@@ -59,8 +71,45 @@
     </div>
   </div>
 
-  <!-- Course cards are generated from the COURSES array in js/main.js -->
-  <section class="sec"><div class="w gcs" id="courseGrid"></div></section>
+  <section class="sec">
+    <div class="w gcs" id="courseGrid">
+      
+      <?php if ($result->num_rows > 0): ?>
+        <?php while($row = $result->fetch_assoc()): ?>
+          <?php 
+            // Category Code mapping (For filtering)
+            $catCode = !empty($row['category']) ? $row['category'] : 'all'; 
+            
+            // Image or Icon logic
+            $imgSrc = !empty($row['image']) ? $row['image'] : 'assets/placeholder.jpg';
+            $icon = !empty($row['icon']) ? $row['icon'] : 'fa-solid fa-graduation-cap';
+            $feeText = !empty($row['fee']) ? $row['fee'] : 'Call for fees';
+          ?>
+          
+          <!-- Course Card -->
+          <a class="gc" href="course.php?id=<?= $row['id'] ?>" data-cat="<?= htmlspecialchars($catCode) ?>">
+            <div class="ph2">
+              <?php if(!empty($row['image'])): ?>
+                <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($row['alt_text']) ?>" style="object-fit:<?= htmlspecialchars($row['fit']) ?>;object-position:<?= htmlspecialchars($row['position']) ?>;">
+              <?php else: ?>
+                <i class="<?= htmlspecialchars($icon) ?>"></i>
+              <?php endif; ?>
+            </div>
+            <i class="dash"></i>
+            <small><i class="<?= htmlspecialchars($icon) ?>"></i> <?= htmlspecialchars($row['tag']) ?></small>
+            <h3><?= htmlspecialchars($row['title']) ?></h3>
+            <p><?= htmlspecialchars($row['description']) ?></p>
+            <span class="meta"><?= htmlspecialchars($row['meta']) ?></span>
+            <span class="meta"><b><?= htmlspecialchars($feeText) ?></b></span>
+          </a>
+          
+        <?php endwhile; ?>
+      <?php else: ?>
+        <p style="grid-column: 1/-1; text-align: center; padding: 40px;">No courses found in the database. Please add courses from the Admin Panel.</p>
+      <?php endif; ?>
+
+    </div>
+  </section>
 
   <section class="sec info-sec">
     <div class="w">
@@ -80,11 +129,11 @@
     <div class="row">
       <img src="assets/logo.png" alt="I-Net Infotech">
       <nav>
-        <a href="courses.html">Courses</a>
-        <a href="placements.html">Placements</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+        <a href="courses.php">Courses</a>
+        <a href="placements.php">Placements</a>
+        <a href="gallery.php">Gallery</a>
+        <a href="about.php">About</a>
+        <a href="contact.php">Contact</a>
       </nav>
       <div>
         <a href="tel:+919846233339">+91 98462 33339</a><br>
@@ -100,7 +149,33 @@
 </a>
 
 <script src="js/carousel.js"></script>
-<script src="js/courses-data.js"></script>
-<script src="js/main.js"></script>
-<script src="js/motion.js"></script></body>
+<script src="js/motion.js"></script>
+
+<!-- ഫിൽട്ടർ ബട്ടണുകൾ പ്രവർത്തിപ്പിക്കാനുള്ള ചെറിയ സ്ക്രിപ്റ്റ് -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const filterButtons = document.querySelectorAll('.sub button');
+  const courseCards = document.querySelectorAll('.gcs .gc');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class from all
+      filterButtons.forEach(b => b.classList.remove('on'));
+      // Add active class to clicked
+      btn.classList.add('on');
+
+      const filterValue = btn.getAttribute('data-f');
+
+      courseCards.forEach(card => {
+        if (filterValue === 'all' || card.getAttribute('data-cat') === filterValue) {
+          card.style.display = ''; // Show
+        } else {
+          card.style.display = 'none'; // Hide
+        }
+      });
+    });
+  });
+});
+</script>
+</body>
 </html>

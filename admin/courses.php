@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Courses | I-Net Admin</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="icon" href="../assets/logo2.png"><link rel="stylesheet" href="css/admin.css"></head><body data-page="courses.html" data-title="Courses"><aside id="side"></aside><div class="main"><header id="top"></header><main class="content">
-<!-- API: GET /api/courses | POST /api/courses | PUT /api/courses/:id | DELETE /api/courses/:id. Field names match COURSES_DEFAULT in js/courses-data.js. Page text: GET/PUT /api/coursesPage. -->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Courses | I-Net Admin</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="icon" href="../assets/logo2.png"><link rel="stylesheet" href="css/admin.css"></head><body data-page="courses.php" data-title="Courses"><aside id="side"></aside><div class="main"><header id="top"></header><main class="content">
+<!-- API: GET /api/courses | POST /api/courses | PUT /api/courses/:id | DELETE /api/courses/:id. -->
 <div class="ph"><div><i class="dash"></i><h2>Courses</h2><p>Every course shown on the Courses page and its details page, plus the page text. Use Draft to hide a course.</p></div><button class="btn" id="add"><i class="fa-solid fa-plus"></i>Add course</button></div>
 <div class="tabs" role="tablist"><button class="on" data-t="list" role="tab">Courses</button><button data-t="text" role="tab">Page text</button></div>
 <section id="list"><div class="tools"><input id="q" type="search" placeholder="Search courses" aria-label="Search courses"><div class="chips" id="chips"></div></div>
@@ -29,26 +29,114 @@
 </main></div><script src="js/seed.js"></script><script src="js/content.js"></script><script src="../js/courses-data.js"></script><script src="js/admin.js"></script>
 <script>
 const CATS={net:'Networking',ops:'Cloud & Security',web:'Web & Digital',code:'Programming',data:'Data & AI',car:'Careers'};
-let L=Store.get('courses',null)||COURSES_DEFAULT.map(c=>({...c,status:'published'})),cat='all',q='',cur=null,up='';
+let L = [], cat = 'all', q = '', cur = null, up = '';
+
+// 1. ഡാറ്റാബേസിൽ നിന്ന് ഡാറ്റ ലോഡ് ചെയ്യുക
+function loadData() {
+    fetch('api/get_courses.php')
+        .then(res => res.json())
+        .then(data => {
+            L = data;
+            draw();
+        })
+        .catch(err => console.error("Error loading data:", err));
+}
+
+// UI ഇനീഷ്യലൈസ് ചെയ്യുക
 $('#f-c').innerHTML=Object.entries(CATS).map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
 $('#f-img').innerHTML='<option value="">No image (use icon)</option>'+SEED.media.map(m=>`<option>${m}</option>`).join('');
 $('#chips').innerHTML=[['all','All'],...Object.entries(CATS)].map(e=>`<button data-k="${e[0]}" class="${e[0]==='all'?'on':''}">${e[1]}</button>`).join('');
-const draw=()=>{const r=L.filter(c=>(cat==='all'||c.c===cat)&&(c.title+c.tag).toLowerCase().includes(q));
-$('#rows').innerHTML=r.map(c=>`<tr><td class="c-img"><span class="th">${c.img?`<img src="${asset(c.img)}" alt="">`:`<i class="${esc(c.icon)}"></i>`}</span></td><td class="c-main"><b>${esc(c.title)}</b><div class="mut">${esc(c.meta)}${c.fee?' · Fee: '+esc(c.fee):' · No fee set'}</div></td><td class="c-cat">${CATS[c.c]}</td><td class="c-st"><span class="pill ${c.status}">${c.status==='draft'?'Draft':'Published'}</span></td><td class="act"><a class="ib" href="../course.html?id=${encodeURIComponent(c.id)}" target="_blank" rel="noopener" aria-label="View ${esc(c.title)} on the site"><i class="fa-solid fa-arrow-up-right-from-square"></i></a> <button class="ib" data-e="${c.id}" aria-label="Edit ${esc(c.title)}"><i class="fa-solid fa-pen"></i></button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">No courses match. Clear the search or add a course.</td></tr>'};
+
+// ടേബിൾ വരയ്ക്കുക
+const draw=()=>{
+    const r=L.filter(c=>(cat==='all'||c.c===cat)&&((c.title||'')+(c.tag||'')).toLowerCase().includes(q));
+    $('#rows').innerHTML=r.map(c=>`<tr><td class="c-img"><span class="th">${c.img?`<img src="${asset(c.img)}" alt="">`:`<i class="${esc(c.icon)}"></i>`}</span></td><td class="c-main"><b>${esc(c.title)}</b><div class="mut">${esc(c.meta)}${c.fee?' · Fee: '+esc(c.fee):' · No fee set'}</div></td><td class="c-cat">${CATS[c.c]||c.c}</td><td class="c-st"><span class="pill ${c.status}">${c.status==='draft'?'Draft':'Published'}</span></td><td class="act"><a class="ib" href="../course.php?id=${encodeURIComponent(c.id)}" target="_blank" rel="noopener" aria-label="View ${esc(c.title)} on the site"><i class="fa-solid fa-arrow-up-right-from-square"></i></a> <button class="ib" data-e="${c.id}" aria-label="Edit ${esc(c.title)}"><i class="fa-solid fa-pen"></i></button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">No courses match. Clear the search or add a course.</td></tr>'
+};
+
+// പ്രിവ്യൂ കാണിക്കുക
 const pv=()=>{const v=id=>$('#f-'+id).value,im=up||v('img');$('#pv').innerHTML=`<div class="ph2">${im?`<img src="${asset(im)}" alt="" style="object-fit:${v('fit')};object-position:${v('pos')}">`:`<i class="${esc(v('icon'))}"></i>`}</div><i class="dash"></i><small><i class="${esc(v('icon'))}"></i> ${esc(v('tag'))}</small><h4>${esc(v('title'))||'Course title'}</h4><p>${esc(v('desc'))}</p><span class="meta">${esc(v('meta'))}</span><span class="meta"><b>${esc(v('fee'))||'Fee: call for fees'}</b></span>`};
-const open=c=>{cur=c;up='';$('#dt').textContent=c?'Edit course':'Add course';$('#del').style.display=c?'':'none';const d=c||{c:'web',status:'published',pos:'center',fit:'cover',icon:'fa-solid fa-graduation-cap',img:''};
-for(const k of ['title','c','tag','icon','status','pos','fit','desc','meta','fee','feeNote','duration','level','mode','batch','certification','eligibility'])$('#f-'+k).value=d[k]||'';for(const k of ['topics','outcomes'])$('#f-'+k).value=(Array.isArray(d[k])?d[k]:String(d[k]||'').split('\n')).join('\n');$('#f-alt').value=d.alt||'';
-const s=$('#f-img');if(d.img&&!/^data:/.test(d.img)&&![...s.options].some(o=>o.value===d.img))s.add(new Option(d.img,d.img));s.value=/^data:/.test(d.img)?'':d.img;if(/^data:/.test(d.img))up=d.img;pv();openDr('dr')};
-$('#add').onclick=()=>open(null);$('#q').oninput=e=>{q=e.target.value.toLowerCase();draw()};
+
+// ഫോം തുറക്കുക
+const open=c=>{
+    cur=c;up='';$('#dt').textContent=c?'Edit course':'Add course';$('#del').style.display=c?'':'none';
+    const d=c||{c:'web',status:'published',pos:'center',fit:'cover',icon:'fa-solid fa-graduation-cap',img:''};
+    for(const k of ['title','c','tag','icon','status','pos','fit','desc','meta','fee','feeNote','duration','level','mode','batch','certification','eligibility'])$('#f-'+k).value=d[k]||'';
+    for(const k of ['topics','outcomes'])$('#f-'+k).value=(Array.isArray(d[k])?d[k]:String(d[k]||'').split('\n')).join('\n');
+    $('#f-alt').value=d.alt||'';
+    const s=$('#f-img');
+    if(d.img&&!/^data:/.test(d.img)&&![...s.options].some(o=>o.value===d.img))s.add(new Option(d.img,d.img));
+    s.value=/^data:/.test(d.img)?'':d.img;if(/^data:/.test(d.img))up=d.img;
+    pv();openDr('dr')
+};
+
+// ഇവന്റ് ലിസണേഴ്സ്
+$('#add').onclick=()=>open(null);
+$('#q').oninput=e=>{q=e.target.value.toLowerCase();draw()};
 $('#chips').onclick=e=>{const b=e.target.closest('button');if(!b)return;cat=b.dataset.k;$$('#chips button').forEach(x=>x.classList.toggle('on',x===b));draw()};
-$('#rows').onclick=e=>{const b=e.target.closest('[data-e]');if(b)open(L.find(c=>c.id===b.dataset.e))};
-$('#f').oninput=pv;$('#f-up').onchange=async e=>{if(e.target.files[0]){up=await readFile(e.target.files[0]);pv()}};
-$('#save').onclick=()=>{const v=id=>$('#f-'+id).value.trim();if(!v('title')){$('#f-title').focus();return toast('Enter a course title first')}
-const d={id:cur?cur.id:(courseSlug(v('title'))||'c'+Date.now())+(L.some(x=>x.id===courseSlug(v('title')))?'-'+Date.now().toString(36):''),c:v('c'),tag:v('tag'),icon:v('icon'),status:v('status'),img:up||v('img'),pos:v('pos'),fit:v('fit'),alt:v('alt'),title:v('title'),desc:v('desc'),meta:v('meta'),fee:v('fee'),feeNote:v('feeNote'),duration:v('duration'),level:v('level'),mode:v('mode'),batch:v('batch'),certification:v('certification'),eligibility:v('eligibility'),topics:v('topics').split('\n').map(x=>x.trim()).filter(Boolean),outcomes:v('outcomes').split('\n').map(x=>x.trim()).filter(Boolean)};
-cur?L[L.indexOf(cur)]=d:L.push(d);Store.set('courses',L);draw();closeDr();toast('Course saved')};
-$('#del').onclick=()=>{if(cur&&confirm('Delete "'+cur.title+'"? This cannot be undone.')){L=L.filter(c=>c!==cur);Store.set('courses',L);draw();closeDr();toast('Course deleted')}};
-draw();
-/* page text tab (hero and "How it works" steps on courses.html) */
+$('#rows').onclick=e=>{const b=e.target.closest('[data-e]');if(b)open(L.find(c=>c.id==b.dataset.e))};
+$('#f').oninput=pv;
+$('#f-up').onchange=async e=>{if(e.target.files[0]){up=await readFile(e.target.files[0]);pv()}};
+
+// 2. സേവ് ചെയ്യുമ്പോൾ API-ലേക്ക് അയക്കുക
+$('#save').onclick = () => {
+    const v = id => $('#f-'+id).value.trim();
+    if(!v('title')){ $('#f-title').focus(); return toast('Enter a course title first'); }
+    
+    const d = {
+        id: cur ? cur.id : null,
+        title: v('title'), c: v('c'), tag: v('tag'), icon: v('icon'), status: v('status'),
+        img: up || v('img'), pos: v('pos'), fit: v('fit'), alt: v('alt'),
+        desc: v('desc'), meta: v('meta'), fee: v('fee'), feeNote: v('feeNote'),
+        duration: v('duration'), level: v('level'), mode: v('mode'),
+        batch: v('batch'), certification: v('certification'), eligibility: v('eligibility'),
+        topics: v('topics').split('\n').map(x=>x.trim()).filter(Boolean),
+        outcomes: v('outcomes').split('\n').map(x=>x.trim()).filter(Boolean)
+    };
+
+    const url = cur ? 'api/update_course.php' : 'api/add_course.php';
+    
+    fetch(url, {
+        method: 'POST', // PUT-ന് പകരം POST ഉപയോഗിക്കുന്നു
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(d)
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success) {
+            toast('Course saved successfully');
+            closeDr();
+            loadData(); // ഡാറ്റ വീണ്ടും ലോഡ് ചെയ്യുക
+        } else {
+            toast(res.error || 'Error saving course');
+        }
+    })
+    .catch(err => toast('Error: ' + err));
+};
+
+// 3. ഡിലീറ്റ് ചെയ്യുമ്പോൾ API-ലേക്ക് അയക്കുക
+$('#del').onclick = () => {
+    if(cur && confirm('Delete "'+cur.title+'"? This cannot be undone.')) {
+        fetch('api/delete_course.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: cur.id })
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.success) {
+                toast('Course deleted');
+                closeDr();
+                loadData(); // ഡാറ്റ വീണ്ടും ലോഡ് ചെയ്യുക
+            }
+        })
+        .catch(err => toast('Error: ' + err));
+    }
+};
+
+// പേജ് ലോഡ് ചെയ്യുമ്പോൾ
+loadData();
+
+/* Page text tab (hero and "How it works" steps) */
 const CP=load('coursesPage');$('#banner').innerHTML=BANNER();bindB(CP);rep('steps',CP.how.steps,[{k:'t',l:'Step title',w:'w2'},{k:'d',l:'Description',w:'w4'}],{t:'',d:''});
 $$('.tabs button').forEach(b=>b.onclick=()=>{$$('.tabs button').forEach(x=>x.classList.toggle('on',x===b));$('#list').hidden=b.dataset.t!=='list';$('#text').hidden=b.dataset.t!=='text'});
 $('#saveT').onclick=()=>{Store.set('coursesPage',CP);toast('Courses page text saved')};

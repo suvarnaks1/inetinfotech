@@ -25,21 +25,21 @@
 <header>
     <div class="w nav">
 
-        <a href="index.html" aria-label="I-Net Infotech home">
+        <a href="index.php" aria-label="I-Net Infotech home">
             <img src="assets/logo.png" alt="I-Net Infotech">
         </a>
 
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="courses.html">Courses</a></li>
-            <li><a href="products.html">Services</a></li>
-            <li><a href="placements.html" class="on">Placements</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="about.php">About</a></li>
+            <li><a href="courses.php">Courses</a></li>
+            <li><a href="services.php">Services</a></li>
+            <li><a href="placements.php" class="on">Placements</a></li>
+            <li><a href="gallery.php">Gallery</a></li>
+            <li><a href="contact.php">Contact</a></li>
         </ul>
 
-        <a class="btn" href="contact.html">Enrol now</a>
+        <a class="btn" href="contact.php">Enrol now</a>
 
         <button class="tg" aria-label="Menu" aria-expanded="false">
             <span></span>
@@ -54,7 +54,7 @@
 
     <!-- HERO SECTION -->
 
-    <section class="phero"><div class="w"><div><h1>Placed<em>students</em></h1><p>Your first job starts here.</p><a class="btn" href="contact.html">Start your journey</a></div><div class="pimgs" aria-hidden="true"><img class="solo" src="assets/internship.jpg" alt="" loading="lazy"></div></div>
+    <section class="phero"><div class="w"><div><h1>Placed<em>students</em></h1><p>Your first job starts here.</p><a class="btn" href="contact.php">Start your journey</a></div><div class="pimgs" aria-hidden="true"><img class="solo" src="assets/internship.jpg" alt="" loading="lazy"></div></div>
 </div></section>
 
 
@@ -195,7 +195,7 @@
 
 <!-- FOOTER -->
 
-<footer class="slim"><div class="w"><div class="row"><img src="assets/logo.png" alt="I-Net Infotech"><nav><a href="courses.html">Courses</a><a href="placements.html">Placements</a><a href="gallery.html">Gallery</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav><div><a href="tel:+919846233339">+91 98462 33339</a><br><a href="tel:+919633233339">+91 96332 33339</a></div></div><small>VBM Bava Chamber, Paramara Road, Ernakulam North, Cochin 682018 · © 2026 I-Net Infotech</small></div></footer>
+<footer class="slim"><div class="w"><div class="row"><img src="assets/logo.png" alt="I-Net Infotech"><nav><a href="courses.php">Courses</a><a href="placements.php">Placements</a><a href="gallery.php">Gallery</a><a href="about.php">About</a><a href="contact.php">Contact</a></nav><div><a href="tel:+919846233339">+91 98462 33339</a><br><a href="tel:+919633233339">+91 96332 33339</a></div></div><small>VBM Bava Chamber, Paramara Road, Ernakulam North, Cochin 682018 · © 2026 I-Net Infotech</small></div></footer>
 
 
 <!-- WHATSAPP BUTTON -->

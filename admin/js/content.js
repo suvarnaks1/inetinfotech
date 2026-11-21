@@ -2,20 +2,20 @@
    BACKEND: replace each DEF key with GET /api/<key> and each Save with PUT /api/<key>. Arrays keep their order = display order. */
 const DEF={
 home:{
- hero:{l1:'Learn.',l2:'Build.',l3:'Launch.',p:'IT training and software, made in Cochin.',btn:'See courses',href:'courses.html',years:'19',yearsLabel:'years',
+ hero:{l1:'Learn.',l2:'Build.',l3:'Launch.',p:'IT training and software, made in Cochin.',btn:'See courses',href:'courses.php',years:'19',yearsLabel:'years',
   img1:'it-programming.jpg',img2:'digital-marketing.jpg',img3:'internship.jpg'},
  ticker:[{w:'Learn'},{w:'Build'},{w:'Get hired'}],
  track:{a:'Pick your',b:'track',items:[
-  {label:'Code',img:'it-programming.jpg',pos:'center 20%',alt:'Code poster',href:'courses.html'},
-  {label:'Marketing',img:'digital-marketing.jpg',pos:'center top',alt:'Marketing poster',href:'courses.html'},
-  {label:'Network',img:'hardware-networking.jpg',pos:'center',alt:'Network poster',href:'courses.html'},
-  {label:'Intern',img:'internship.jpg',pos:'60% center',alt:'Intern poster',href:'courses.html'},
-  {label:'Manage',img:'project-management.webp',pos:'center',alt:'Manage poster',href:'courses.html'}]},
+  {label:'Code',img:'it-programming.jpg',pos:'center 20%',alt:'Code poster',href:'courses.php'},
+  {label:'Marketing',img:'digital-marketing.jpg',pos:'center top',alt:'Marketing poster',href:'courses.php'},
+  {label:'Network',img:'hardware-networking.jpg',pos:'center',alt:'Network poster',href:'courses.php'},
+  {label:'Intern',img:'internship.jpg',pos:'60% center',alt:'Intern poster',href:'courses.php'},
+  {label:'Manage',img:'project-management.webp',pos:'center',alt:'Manage poster',href:'courses.php'}]},
  logos:{title:'Our certifications'},
- cta:{a:'Your seat',b:'is waiting.',btn:'Enrol now',href:'contact.html'}
+ cta:{a:'Your seat',b:'is waiting.',btn:'Enrol now',href:'contact.php'}
 },
 about:{
- hero:{a:'About',b:'us',p:'We teach what the industry hires for',btn:'Talk to us',href:'contact.html'},
+ hero:{a:'About',b:'us',p:'We teach what the industry hires for',btn:'Talk to us',href:'contact.php'},
  say:{a:'Classrooms that feel like',b:'labs.',c:'Trainers who work in the industry.',p:'I-Net Infotech is a Cochin IT services firm. We build software, set up networks and train people, and we have done it for 19 years. We are Cisco and Microsoft learning partners and ISO 9001:2015 certified.'},
  tiles:[{icon:'fa-solid fa-rocket',t:'Mission',d:'To give every learner job-ready IT skills through hands-on training, real tools and trainers who work in the industry.'},
   {icon:'fa-solid fa-eye',t:'Vision',d:'To be the most trusted name in Cochin for IT training and services, where learning leads straight to a career.'},
@@ -31,14 +31,14 @@ about:{
   {icon:'fa-solid fa-handshake',t:'Placement support',d:'Resume help, interview practice and referrals to hiring companies.'}]}
 },
 coursesPage:{
- hero:{a:'Our',b:'courses',p:'Pick a track. Build real work.',btn:'Talk to a counsellor',href:'contact.html'},
+ hero:{a:'Our',b:'courses',p:'Pick a track. Build real work.',btn:'Talk to a counsellor',href:'contact.php'},
  how:{title:'How it works',p:'From first call to first job, in three clear stages.',steps:[
   {t:'Counselling',d:'Tell us your background and goal. We suggest the right course and batch timing.'},
   {t:'Hands-on training',d:'Lab and project based classes with trainers who work in the industry.'},
   {t:'Certify and get placed',d:'Exam preparation for Cisco, Microsoft and Red Hat, then resume and interview support.'}]}
 },
 services:{
- hero:{a:'Our',b:'services',p:'Network, software and growth, from one Cochin team.',btn:'Request a quote',href:'contact.html'},
+ hero:{a:'Our',b:'services',p:'Network, software and growth, from one Cochin team.',btn:'Request a quote',href:'contact.php'},
  how:{title:'How we work',p:'A simple process so you always know what happens next.',steps:[
   {t:'Consult',d:'We visit or call, understand your needs and note what you already have.'},
   {t:'Plan',d:'You get a clear scope, timeline and quote before any work starts.'},
@@ -47,17 +47,17 @@ services:{
  list:[
   {id:'network',icon:'fa-solid fa-network-wired',name:'Network Solutions',short:'Cabling, LAN/WAN, Wi-Fi and security',title:'Networks that stay up when your team needs them',desc:'We design, install and maintain office and campus networks, from structured cabling to firewalls and Wi-Fi.',pts:['Structured cabling and racks','LAN, WAN and VPN setup','Wi-Fi planning and rollout','Firewalls and access control','Server and storage setup','Annual maintenance plans'],fit:'Best for offices, schools, shops and growing teams moving to a new space.',course:'Cisco and Red Hat training',href:''},
   {id:'software',icon:'fa-solid fa-code',name:'Software Development',short:'Custom business software',title:'Software built around the way you work',desc:'We turn a manual process into a working system: billing, inventory, student records, reports and more.',pts:['Requirement workshops','Web-based business applications','Database design and reporting','Integration with existing tools','Testing before every release','Support after launch'],fit:'Best for businesses outgrowing spreadsheets or off-the-shelf tools.',course:'Java, Python and Full Stack courses',href:''},
-  {id:'training',icon:'fa-solid fa-graduation-cap',name:'Refined IT Training',short:'Industry-focused courses and corporate batches',title:'Training that ends with a portfolio and a certificate',desc:'Trainer-led classes with labs and projects for students, job seekers and company teams.',pts:['Networking, cloud and security','Programming and full stack','Data, AI and testing','Certification exam preparation','Internships on live projects','Placement support'],fit:'Best for students, career switchers and companies upskilling a team.',course:'See all courses',href:'courses.html'},
+  {id:'training',icon:'fa-solid fa-graduation-cap',name:'Refined IT Training',short:'Industry-focused courses and corporate batches',title:'Training that ends with a portfolio and a certificate',desc:'Trainer-led classes with labs and projects for students, job seekers and company teams.',pts:['Networking, cloud and security','Programming and full stack','Data, AI and testing','Certification exam preparation','Internships on live projects','Placement support'],fit:'Best for students, career switchers and companies upskilling a team.',course:'See all courses',href:'courses.php'},
   {id:'website',icon:'fa-solid fa-globe',name:'Website Development',short:'Responsive business websites',title:'A website that loads fast and works on every screen',desc:'We design and build business sites and online stores, then host and maintain them for you.',pts:['Design that fits your brand','Mobile-first, responsive layouts','Online stores and enquiry forms','Search-friendly structure','Hosting and domain setup','Content updates after launch'],fit:'Best for new businesses and companies replacing an outdated site.',course:'Website Development course',href:''},
   {id:'app',icon:'fa-solid fa-mobile-screen-button',name:'App Development',short:'Android and iOS apps',title:'Mobile apps from first sketch to the app store',desc:'We plan, design and build Android and iOS apps, and handle store publishing.',pts:['Product planning and wireframes','Android and iOS builds','Backend and API development','Push notifications and payments','Store listing and publishing','Updates and bug fixes'],fit:'Best for businesses that want to reach customers on their phones.',course:'Android & iOS course',href:''},
   {id:'marketing',icon:'fa-solid fa-bullhorn',name:'Digital Marketing',short:'SEO, social media and ads',title:'Marketing that brings the right customers to you',desc:'We plan and run campaigns across search, social media and email, and report what worked.',pts:['SEO and Google Business setup','Social media management','Paid ads on Google and Meta','Email and WhatsApp campaigns','Content and creatives','Monthly performance reports'],fit:'Best for local and online businesses that want steady enquiries.',course:'Digital Marketing course',href:''}]
 },
 pcontent:{
- hero:{a:'Placed',b:'students',p:'Your first job starts here.',btn:'Start your journey',href:'contact.html'},
+ hero:{a:'Placed',b:'students',p:'Your first job starts here.',btn:'Start your journey',href:'contact.php'},
  dome:{a:'Our Placed',b:'Students',lead:'Drag to spin the dome, tap a photo to enlarge.',hint:'Drag to explore'}
 },
 gallery:{
- hero:{a:'Life at',b:'I-Net',p:'Classes, workshops, celebrations.',btn:'Visit the campus',href:'contact.html'},
+ hero:{a:'Life at',b:'I-Net',p:'Classes, workshops, celebrations.',btn:'Visit the campus',href:'contact.php'},
  wall:{a:'Learning in',b:'Motion'},
  items:[
   {img:'it-programming.jpg',alt:'Programming labs',pos:'center 12%',fit:''},{img:'digital-marketing.jpg',alt:'Digital marketing',pos:'center 0%',fit:''},
@@ -82,7 +82,7 @@ contact:{
 site:{
  navBtn:'Enrol now',phone1:'+91 98462 33339',phone2:'+91 96332 33339',whatsapp:'919846233339',
  address:'VBM Bava Chamber, Paramara Road, Ernakulam North, Cochin 682018',copyright:'© 2026 I-Net Infotech',
- menu:[{l:'Home',href:'index.html'},{l:'About',href:'about.html'},{l:'Courses',href:'courses.html'},{l:'Services',href:'products.html'},{l:'Placements',href:'placements.html'},{l:'Gallery',href:'gallery.html'},{l:'Contact',href:'contact.html'}],
- footerLinks:[{l:'Courses',href:'courses.html'},{l:'Placements',href:'placements.html'},{l:'Gallery',href:'gallery.html'},{l:'About',href:'about.html'},{l:'Contact',href:'contact.html'}]
+ menu:[{l:'Home',href:'index.php'},{l:'About',href:'about.php'},{l:'Courses',href:'courses.php'},{l:'Services',href:'services.php'},{l:'Placements',href:'placements.php'},{l:'Gallery',href:'gallery.php'},{l:'Contact',href:'contact.php'}],
+ footerLinks:[{l:'Courses',href:'courses.php'},{l:'Placements',href:'placements.php'},{l:'Gallery',href:'gallery.php'},{l:'About',href:'about.php'},{l:'Contact',href:'contact.php'}]
 }
 };

@@ -1,5 +1,5 @@
 # I-Net Infotech admin (UI only)
-Open `admin/index.html`. Keep the `admin/` folder next to `index.html` so `../assets/` resolves.
+Open `admin/index.php`. Keep the `admin/` folder next to `index.php` so `../assets/` resolves.
 
 ## Pages (each mirrors a page of the new site)
 - Home page: top banner, word strip, "Pick your track" posters, certification strip heading, closing banner.
