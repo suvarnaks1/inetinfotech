@@ -82,7 +82,7 @@ contact:{
 site:{
  navBtn:'Enrol now',phone1:'+91 98462 33339',phone2:'+91 96332 33339',whatsapp:'919846233339',
  address:'VBM Bava Chamber, Paramara Road, Ernakulam North, Cochin 682018',copyright:'© 2026 I-Net Infotech',
- menu:[{l:'Home',href:'index.php'},{l:'About',href:'about.php'},{l:'Courses',href:'courses.php'},{l:'Services',href:'services.php'},{l:'Placements',href:'placements.php'},{l:'Gallery',href:'gallery.php'},{l:'Contact',href:'contact.php'}],
+ menu:[{l:'Home',href:'index.php'},{l:'About',href:'about.php'},{l:'Courses',href:'courses.php'},{l:'Placements',href:'placements.php'},{l:'Gallery',href:'gallery.php'},{l:'Contact',href:'contact.php'}],
  footerLinks:[{l:'Courses',href:'courses.php'},{l:'Placements',href:'placements.php'},{l:'Gallery',href:'gallery.php'},{l:'About',href:'about.php'},{l:'Contact',href:'contact.php'}]
 }
 };
