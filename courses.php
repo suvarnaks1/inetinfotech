@@ -1,11 +1,11 @@
 <?php
-// 1. Database Connection (ഡാറ്റാബേസ് കണക്ഷൻ)
+// 1. ഡാറ്റാബേസ് കണക്ഷൻ
 $conn = new mysqli("localhost", "root", "", "inetinfotech");
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
 
-// 2. Fetch published courses from the database
+// 2. കോഴ്സുകൾ ഡാറ്റാബേസിൽ നിന്ന് എടുക്കുക
 $sql = "SELECT * FROM courses WHERE status = 'published' ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
@@ -22,7 +22,197 @@ $result = $conn->query($sql);
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/poster.css">
 <link rel="stylesheet" href="css/carousel.css">
-<link rel="stylesheet" href="css/motion.css"><script>try{if(sessionStorage.getItem('inet.nav')){document.documentElement.classList.add('pt-in');sessionStorage.removeItem('inet.nav')}}catch(e){}</script></head>
+<link rel="stylesheet" href="css/motion.css">
+<script>try{if(sessionStorage.getItem('inet.nav')){document.documentElement.classList.add('pt-in');sessionStorage.removeItem('inet.nav')}}catch(e){}</script>
+
+<style>
+/* --- ഇമേജിലെ പോലെയുള്ള കാർഡ് ഡിസൈൻ --- */
+.gcs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 24px;
+}
+
+.gc {
+    display: flex;
+    flex-direction: column;
+    background: #070709;
+    border-radius: 18px;
+    overflow: hidden;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    height: 100%;
+}
+
+.gc:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.65);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* മുകളിലെ ഇമേജ് & ഓവർലേ ഭാഗം */
+.gc-media {
+    position: relative;
+    height: 295px;
+    width: 100%;
+    background: #121216;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.gc-media img.gc-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    transition: transform 0.45s ease;
+}
+
+.gc:hover .gc-media img.gc-bg-img {
+    transform: scale(1.05);
+}
+
+/* താഴത്തെ ടൈറ്റിൽ വ്യക്തമായി കാണാനുള്ള ഡാർക്ക് ഗ്രേഡിയന്റ് */
+.gc-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.12) 0%,
+        rgba(0, 0, 0, 0.08) 45%,
+        rgba(5, 5, 7, 0.82) 82%,
+        #070709 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+.gc-fallback-icon {
+    position: relative;
+    z-index: 1;
+    margin: auto;
+    font-size: 54px;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* ടോപ്പ് ലെഫ്റ്റ് Cream/Off-White Pill Tag */
+.card-tag {
+    position: relative;
+    z-index: 2;
+    align-self: flex-start;
+    background: #f2efe9;
+    color: #111111;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.card-tag i {
+    font-size: 12px;
+    color: #111111;
+}
+
+/* ഇമേജിന് താഴെ വരുന്ന വലിയ Bold White Title */
+.gc-title-wrap {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.gc-title-wrap h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 25px;
+    line-height: 1.06;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.2px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+}
+
+/* താഴത്തെ Dark Footer (Meta + View details + Red Circle Arrow) */
+.card-bottom {
+    background: #070709;
+    padding: 12px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: auto;
+}
+
+.gc-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 18px;
+}
+
+.gc-meta-bar {
+    width: 2px;
+    height: 15px;
+    background: #22c55e;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.gc-meta-text {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #ff6a1a;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    width: fit-content;
+}
+
+.view-btn .arrow-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e11d48;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.gc:hover .view-btn .arrow-circle {
+    transform: translateX(4px);
+    background: #f43f5e;
+}
+</style>
+</head>
 <body>
 
 <header>
@@ -60,7 +250,6 @@ $result = $conn->query($sql);
   <div class="sub">
     <div class="w">
       <strong>Course topics</strong>
-      <!-- PHP-യിൽ നിന്ന് ലോഡ് ചെയ്യുന്നതിനാൽ, ഇവിടെ ഫിൽട്ടർ ചെയ്യാൻ ഞാൻ ഒരു ചെറിയ JS ഉപയോഗിക്കുന്നു -->
       <button class="on" data-f="all">All</button>
       <button data-f="net">Networking</button>
       <button data-f="ops">Cloud &amp; Security</button>
@@ -73,36 +262,57 @@ $result = $conn->query($sql);
 
   <section class="sec">
     <div class="w gcs" id="courseGrid">
-      
-      <?php if ($result->num_rows > 0): ?>
+
+      <?php if ($result && $result->num_rows > 0): ?>
         <?php while($row = $result->fetch_assoc()): ?>
-          <?php 
-            // Category Code mapping (For filtering)
-            $catCode = !empty($row['category']) ? $row['category'] : 'all'; 
-            
-            // Image or Icon logic
-            $imgSrc = !empty($row['image']) ? $row['image'] : 'assets/placeholder.jpg';
-            $icon = !empty($row['icon']) ? $row['icon'] : 'fa-solid fa-graduation-cap';
-            $feeText = !empty($row['fee']) ? $row['fee'] : 'Call for fees';
+          <?php
+            $catCode = !empty($row['category']) ? $row['category'] : 'all';
+            $imgSrc  = !empty($row['image']) ? $row['image'] : '';
+            $altText = !empty($row['alt_text']) ? $row['alt_text'] : ($row['title'] ?? 'Course');
+            $icon    = !empty($row['icon']) ? $row['icon'] : 'fa-solid fa-laptop-code';
+            $tagText = !empty($row['tag']) ? $row['tag'] : strtoupper($catCode);
           ?>
-          
-          <!-- Course Card -->
-          <a class="gc" href="course.php?id=<?= $row['id'] ?>" data-cat="<?= htmlspecialchars($catCode) ?>">
-            <div class="ph2">
-              <?php if(!empty($row['image'])): ?>
-                <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($row['alt_text']) ?>" style="object-fit:<?= htmlspecialchars($row['fit']) ?>;object-position:<?= htmlspecialchars($row['position']) ?>;">
+
+          <!-- Course Card (Image Reference UI) -->
+          <a class="gc" href="course.php?id=<?= (int)$row['id'] ?>" data-cat="<?= htmlspecialchars($catCode) ?>">
+
+            <div class="gc-media">
+              <?php if (!empty($imgSrc)): ?>
+                <img class="gc-bg-img" src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($altText) ?>" loading="lazy">
               <?php else: ?>
-                <i class="<?= htmlspecialchars($icon) ?>"></i>
+                <i class="<?= htmlspecialchars($icon) ?> gc-fallback-icon" aria-hidden="true"></i>
               <?php endif; ?>
+
+              <!-- Top Pill Tag -->
+              <div class="card-tag">
+                <i class="<?= htmlspecialchars($icon) ?>" aria-hidden="true"></i>
+                <span><?= htmlspecialchars($tagText) ?></span>
+              </div>
+
+              <!-- Bold Title Over Lower Image -->
+              <div class="gc-title-wrap">
+                <h3><?= htmlspecialchars($row['title']) ?></h3>
+              </div>
             </div>
-            <i class="dash"></i>
-            <small><i class="<?= htmlspecialchars($icon) ?>"></i> <?= htmlspecialchars($row['tag']) ?></small>
-            <h3><?= htmlspecialchars($row['title']) ?></h3>
-            <p><?= htmlspecialchars($row['description']) ?></p>
-            <span class="meta"><?= htmlspecialchars($row['meta']) ?></span>
-            <span class="meta"><b><?= htmlspecialchars($feeText) ?></b></span>
+
+            <div class="card-bottom">
+              <?php if (!empty($row['meta'])): ?>
+                <div class="gc-meta-row">
+                  <span class="gc-meta-bar" aria-hidden="true"></span>
+                  <span class="gc-meta-text"><?= htmlspecialchars($row['meta']) ?></span>
+                </div>
+              <?php endif; ?>
+
+              <span class="view-btn">
+                <span>View details</span>
+                <span class="arrow-circle" aria-hidden="true">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </span>
+              </span>
+            </div>
+
           </a>
-          
+
         <?php endwhile; ?>
       <?php else: ?>
         <p style="grid-column: 1/-1; text-align: center; padding: 40px;">No courses found in the database. Please add courses from the Admin Panel.</p>
@@ -151,7 +361,7 @@ $result = $conn->query($sql);
 <script src="js/carousel.js"></script>
 <script src="js/motion.js"></script>
 
-<!-- ഫിൽട്ടർ ബട്ടണുകൾ പ്രവർത്തിപ്പിക്കാനുള്ള ചെറിയ സ്ക്രിപ്റ്റ് -->
+<!-- ഫിൽട്ടർ ബട്ടണുകൾ പ്രവർത്തിപ്പിക്കാനുള്ള സ്ക്രിപ്റ്റ് -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const filterButtons = document.querySelectorAll('.sub button');
@@ -159,18 +369,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Remove active class from all
       filterButtons.forEach(b => b.classList.remove('on'));
-      // Add active class to clicked
       btn.classList.add('on');
 
       const filterValue = btn.getAttribute('data-f');
 
       courseCards.forEach(card => {
         if (filterValue === 'all' || card.getAttribute('data-cat') === filterValue) {
-          card.style.display = ''; // Show
+          card.style.display = 'flex';
         } else {
-          card.style.display = 'none'; // Hide
+          card.style.display = 'none';
         }
       });
     });
