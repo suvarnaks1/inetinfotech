@@ -26,7 +26,7 @@ $result = $conn->query($sql);
 <script>try{if(sessionStorage.getItem('inet.nav')){document.documentElement.classList.add('pt-in');sessionStorage.removeItem('inet.nav')}}catch(e){}</script>
 
 <style>
-/* --- ഇമേജിലെ പോലെയുള്ള കാർഡ് ഡിസൈൻ --- */
+
 .gcs {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -52,7 +52,6 @@ $result = $conn->query($sql);
     border-color: rgba(255, 255, 255, 0.18);
 }
 
-/* മുകളിലെ ഇമേജ് & ഓവർലേ ഭാഗം */
 .gc-media {
     position: relative;
     height: 295px;
@@ -80,7 +79,7 @@ $result = $conn->query($sql);
     transform: scale(1.05);
 }
 
-/* താഴത്തെ ടൈറ്റിൽ വ്യക്തമായി കാണാനുള്ള ഡാർക്ക് ഗ്രേഡിയന്റ് */
+
 .gc-media::after {
     content: "";
     position: absolute;
@@ -96,15 +95,18 @@ $result = $conn->query($sql);
     pointer-events: none;
 }
 
+
 .gc-fallback-icon {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
-    margin: auto;
-    font-size: 54px;
-    color: rgba(255, 255, 255, 0.35);
+    font-size: 64px;
+    color: rgba(255, 255, 255, 0.2);
 }
 
-/* ടോപ്പ് ലെഫ്റ്റ് Cream/Off-White Pill Tag */
+
 .card-tag {
     position: relative;
     z-index: 2;
@@ -128,7 +130,7 @@ $result = $conn->query($sql);
     color: #111111;
 }
 
-/* ഇമേജിന് താഴെ വരുന്ന വലിയ Bold White Title */
+
 .gc-title-wrap {
     position: relative;
     z-index: 2;
@@ -147,7 +149,7 @@ $result = $conn->query($sql);
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
 }
 
-/* താഴത്തെ Dark Footer (Meta + View details + Red Circle Arrow) */
+
 .card-bottom {
     background: #070709;
     padding: 12px 16px 16px;
@@ -268,18 +270,25 @@ $result = $conn->query($sql);
           <?php
             $catCode = !empty($row['category']) ? $row['category'] : 'all';
             $imgSrc  = !empty($row['image']) ? $row['image'] : '';
+            
+            // Base64 ഇമേജ് ആണെങ്കിൽ അത് ഒഴിവാക്കുക (പ്രശ്നം ഒഴിവാക്കാൻ)
+            if (strpos($imgSrc, 'data:image') !== false) {
+                $imgSrc = ''; 
+            }
+
             $altText = !empty($row['alt_text']) ? $row['alt_text'] : ($row['title'] ?? 'Course');
             $icon    = !empty($row['icon']) ? $row['icon'] : 'fa-solid fa-laptop-code';
             $tagText = !empty($row['tag']) ? $row['tag'] : strtoupper($catCode);
           ?>
 
-          <!-- Course Card (Image Reference UI) -->
+          <!-- Course Card -->
           <a class="gc" href="course.php?id=<?= (int)$row['id'] ?>" data-cat="<?= htmlspecialchars($catCode) ?>">
 
             <div class="gc-media">
               <?php if (!empty($imgSrc)): ?>
                 <img class="gc-bg-img" src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($altText) ?>" loading="lazy">
               <?php else: ?>
+               
                 <i class="<?= htmlspecialchars($icon) ?> gc-fallback-icon" aria-hidden="true"></i>
               <?php endif; ?>
 
@@ -289,7 +298,7 @@ $result = $conn->query($sql);
                 <span><?= htmlspecialchars($tagText) ?></span>
               </div>
 
-              <!-- Bold Title Over Lower Image -->
+              <!-- Bold Title -->
               <div class="gc-title-wrap">
                 <h3><?= htmlspecialchars($row['title']) ?></h3>
               </div>
@@ -361,7 +370,7 @@ $result = $conn->query($sql);
 <script src="js/carousel.js"></script>
 <script src="js/motion.js"></script>
 
-<!-- ഫിൽട്ടർ ബട്ടണുകൾ പ്രവർത്തിപ്പിക്കാനുള്ള സ്ക്രിപ്റ്റ് -->
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const filterButtons = document.querySelectorAll('.sub button');

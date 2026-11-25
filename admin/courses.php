@@ -1,5 +1,4 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Courses | I-Net Admin</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="icon" href="../assets/logo2.png"><link rel="stylesheet" href="css/admin.css"></head><body data-page="courses.php" data-title="Courses"><aside id="side"></aside><div class="main"><header id="top"></header><main class="content">
-<!-- API: GET /api/courses | POST /api/courses | PUT /api/courses/:id | DELETE /api/courses/:id. -->
 <div class="ph"><div><i class="dash"></i><h2>Courses</h2><p>Every course shown on the Courses page and its details page, plus the page text. Use Draft to hide a course.</p></div><button class="btn" id="add"><i class="fa-solid fa-plus"></i>Add course</button></div>
 <div class="tabs" role="tablist"><button class="on" data-t="list" role="tab">Courses</button><button data-t="text" role="tab">Page text</button></div>
 <section id="list"><div class="tools"><input id="q" type="search" placeholder="Search courses" aria-label="Search courses"><div class="chips" id="chips"></div></div>
@@ -75,7 +74,32 @@ $('#q').oninput=e=>{q=e.target.value.toLowerCase();draw()};
 $('#chips').onclick=e=>{const b=e.target.closest('button');if(!b)return;cat=b.dataset.k;$$('#chips button').forEach(x=>x.classList.toggle('on',x===b));draw()};
 $('#rows').onclick=e=>{const b=e.target.closest('[data-e]');if(b)open(L.find(c=>c.id==b.dataset.e))};
 $('#f').oninput=pv;
-$('#f-up').onchange=async e=>{if(e.target.files[0]){up=await readFile(e.target.files[0]);pv()}};
+
+// ഇമേജ് അപ്‌ലോഡ് ചെയ്യാനുള്ള പുതിയ കോഡ്
+$('#f-up').onchange = async e => {
+    if (e.target.files[0]) {
+        const formData = new FormData();
+        formData.append('image', e.target.files[0]);
+
+        try {
+            const res = await fetch('api/upload.php', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            
+            if (data.success) {
+                up = data.path; // അപ്‌ലോഡ് ചെയ്ത ഇമേജിന്റെ പാത്ത്
+                pv(); // പ്രിവ്യൂ അപ്ഡേറ്റ് ചെയ്യുക
+                toast('Image uploaded');
+            } else {
+                toast('Upload failed: ' + data.error);
+            }
+        } catch (err) {
+            toast('Error uploading image');
+        }
+    }
+};
 
 // 2. സേവ് ചെയ്യുമ്പോൾ API-ലേക്ക് അയക്കുക
 $('#save').onclick = () => {
@@ -96,7 +120,7 @@ $('#save').onclick = () => {
     const url = cur ? 'api/update_course.php' : 'api/add_course.php';
     
     fetch(url, {
-        method: 'POST', // PUT-ന് പകരം POST ഉപയോഗിക്കുന്നു
+        method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(d)
     })
